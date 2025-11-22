@@ -1,5 +1,4 @@
 import React from 'react';
-import Hero from './Hero';
 import Stats from './Stats';
 import AboutCards from './AboutCards';
 import Sectors from './Sectors';
@@ -9,7 +8,7 @@ import Contact from './Contact';
 import AIChat from './AIChat';
 import { Journey } from './Journey';
 import StickyContact from './StickyContact';
-import HeroVideo from './HeroVideo';
+import HeroParallax from './HeroParallax';
 
 interface HomeProps {
     onNavigate: (page: string) => void;
@@ -18,8 +17,7 @@ interface HomeProps {
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     return (
         <>
-            <Hero />
-            <HeroVideo />
+            <HeroParallax />
             <Stats />
             <AboutCards />
             <Sectors onNavigate={onNavigate} />

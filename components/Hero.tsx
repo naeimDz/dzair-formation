@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Play, ShieldCheck } from 'lucide-react';
 
 const Hero: React.FC = () => {
   return (
@@ -14,12 +14,44 @@ const Hero: React.FC = () => {
         transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
         className="absolute inset-0 w-full h-full"
       >
+                    <div className="relative h-full w-full rounded-[2rem] overflow-hidden bg-slate-900 border border-white/10 shadow-inner [transform:translateZ(0)]">
+                        {/* Video */}
+                        <video
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="absolute inset-0 w-full h-full opacity-80 group-hover:scale-110 transition-transform duration-700"
+                        >
+                            <source src="../assets/videos/video_banner.mp4" type="video/mp4" />
+                        </video>
 
-        <img
-          src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1920&auto=format&fit=crop"
-          alt="Industrial Cockpit"
-          className="w-full h-full object-cover opacity-20"
-        />
+                        {/* Overlays */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+
+                        {/* Floating Badges (3D Elements) */}
+                        <motion.div
+                            style={{ transform: "translateZ(50px)" }}
+                            className="absolute top-6 right-6 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-2xl shadow-lg"
+                        >
+                            <ShieldCheck className="text-yellow-400 w-8 h-8" />
+                        </motion.div>
+
+                        <motion.div
+                            style={{ transform: "translateZ(30px)" }}
+                            className="absolute bottom-8 left-6 bg-black/60 backdrop-blur-md border border-yellow-500/30 px-4 py-2 rounded-xl flex items-center gap-2"
+                        >
+                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                            <span className="text-white text-sm font-medium">Live Simulation</span>
+                        </motion.div>
+
+                        {/* Play Button */}
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <Play className="text-white w-8 h-8 fill-white" />
+                            </div>
+                        </div>
+                    </div>
       </motion.div>
 
       {/* Content */}

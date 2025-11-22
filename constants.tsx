@@ -21,10 +21,8 @@ import WheelLoaderImg from './assets/images/machines-simulator/wheel_loader.png'
 import DumpTruckImg from './assets/images/machines-simulator/dump_truck.png';
 import MiningDumperImg from './assets/images/machines-simulator/Mining dumper.png';
 import MiningShovelImg from './assets/images/machines-simulator/mining_shovel.png';
-import MiningLoaderImg from './assets/images/machines-simulator/Mining_loader.png';
 import ForkliftImg from './assets/images/machines-simulator/forklift.png';
 import EmptyContainerImg from './assets/images/machines-simulator/Empty_Container_Lift_Trucks.png';
-import ReachStackerImg from './assets/images/machines-simulator/reach-stacker.png';
 
 export const STATS: Stat[] = [
   { id: 1, value: "1200", label: "ساعة تدريب سنوية", suffix: "+" },

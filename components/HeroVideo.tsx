@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
-import { ChevronDown, Play, ShieldCheck, Award, Zap } from 'lucide-react';
+import { motion, useTransform, useSpring, useMotionValue } from 'framer-motion';
+import { Play, ShieldCheck, Zap } from 'lucide-react';
 
 const HeroVideo: React.FC = () => {
     const ref = useRef<HTMLDivElement>(null);
@@ -80,7 +80,7 @@ const HeroVideo: React.FC = () => {
                             loop
                             muted
                             playsInline
-                            className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700"
+                            className="absolute inset-0 w-full h-full opacity-80 group-hover:scale-110 transition-transform duration-700"
                         >
                             <source src="../assets/videos/video_banner.mp4" type="video/mp4" />
                         </video>
