@@ -76,7 +76,8 @@ const MachineCard: React.FC<{
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            className="group bg-stone-900 rounded-2xl overflow-hidden border border-stone-800 hover:border-industrial-yellow/50 transition-all duration-300 hover:shadow-2xl hover:shadow-industrial-yellow/10 flex flex-col"
+            onClick={() => onSelect(machine)}
+            className="group bg-stone-900 rounded-2xl overflow-hidden border border-stone-800 hover:border-industrial-yellow/50 transition-all duration-300 hover:shadow-2xl hover:shadow-industrial-yellow/10 flex flex-col cursor-pointer"
         >
             {/* Image Container */}
             <div className="relative h-64 overflow-hidden bg-stone-950">
@@ -99,7 +100,7 @@ const MachineCard: React.FC<{
                     {machine.name}
                 </h3>
                 <p className="text-gray-400 text-sm mb-6 line-clamp-2 flex-1">
-                    {machine.description}
+                    {machine.shortDescription}
                 </p>
 
                 <button

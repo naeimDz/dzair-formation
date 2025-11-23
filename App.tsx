@@ -4,10 +4,11 @@ import CourseSchedule from './components/CourseSchedule';
 import MachinesCatalog from './components/MachinesCatalog';
 import MachineDetail from './components/MachineDetail';
 import Navbar from './components/Navbar';
+import Contact from './components/Contact';
 import { Machine } from './types';
 
 function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'schedule' | 'machines' | 'machine-detail'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'schedule' | 'machines' | 'machine-detail' | 'contact'>('home');
   const [selectedMachine, setSelectedMachine] = useState<Machine | null>(null);
 
   const handleMachineSelect = (machine: Machine) => {
@@ -30,6 +31,8 @@ function App() {
           onBack={() => setCurrentView('home')}
           onSelectMachine={handleMachineSelect}
         />
+      ) : currentView === 'contact' ? (
+        <Contact onNavigate={(page) => setCurrentView(page as any)} />
       ) : (
         selectedMachine && (
           <MachineDetail

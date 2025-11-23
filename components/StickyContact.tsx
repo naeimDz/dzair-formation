@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, X, Copy, Check, MessageCircle, User, Briefcase, HelpCircle } from 'lucide-react';
+import { Phone, X, Copy, Check } from 'lucide-react';
 
 import { CONTACT_NUMBERS } from '../constants';
 

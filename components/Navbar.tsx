@@ -99,17 +99,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                                 </div>
 
                                 <button
-                                    onClick={() => {
-                                        const contactSection = document.getElementById('contact_footer');
-                                        if (contactSection) {
-                                            contactSection.scrollIntoView({ behavior: 'smooth' });
-                                        } else {
-                                            handleNavClick('home');
-                                            setTimeout(() => {
-                                                document.getElementById('contact_footer')?.scrollIntoView({ behavior: 'smooth' });
-                                            }, 100);
-                                        }
-                                    }}
+                                    onClick={() => handleNavClick('contact')}
                                     className="bg-white/10 text-white px-5 py-2 font-bold hover:bg-white/20 transition-colors border border-white/10"
                                 >
                                     اتصل بنا
@@ -127,17 +117,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
 
                         {/* Mobile Register Button */}
                         <button
-                            onClick={() => {
-                                const contactSection = document.getElementById('contact_footer');
-                                if (contactSection) {
-                                    contactSection.scrollIntoView({ behavior: 'smooth' });
-                                } else {
-                                    handleNavClick('home');
-                                    setTimeout(() => {
-                                        document.getElementById('contact_footer')?.scrollIntoView({ behavior: 'smooth' });
-                                    }, 100);
-                                }
-                            }}
+                            onClick={() => handleNavClick('contact')}
                             className="md:hidden bg-industrial-yellow text-industrial-dark px-3 py-1.5 font-bold hover:bg-yellow-400 transition-colors shadow-lg text-xs whitespace-nowrap"
                         >
                             سجل الآن
@@ -193,15 +173,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                         <button
                             onClick={() => {
                                 setIsMobileMenuOpen(false);
-                                const contactSection = document.getElementById('contact');
-                                if (contactSection) {
-                                    contactSection.scrollIntoView({ behavior: 'smooth' });
-                                } else {
-                                    handleNavClick('home');
-                                    setTimeout(() => {
-                                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                                    }, 100);
-                                }
+                                handleNavClick('contact');
                             }}
                             className="bg-industrial-yellow text-industrial-dark px-4 py-3 font-bold text-center hover:bg-yellow-400 transition-colors"
                         >

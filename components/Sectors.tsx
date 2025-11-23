@@ -7,8 +7,8 @@ import { Sector, Machine } from '../types';
 // --- Sub-Components for Different Layouts ---
 
 // 1. Horizontal Card (Public Works) -
-const HorizontalCard: React.FC<{ machine: Machine; index: number }> = ({ machine, index }) => (
-  <div className="bg-white rounded-3xl overflow-hidden shadow-2xl md:max-w-4xl mx-auto transform transition-transform hover:scale-[1.01] duration-300 border border-gray-100">
+const HorizontalCard: React.FC<{ machine: Machine; index: number; onClick: () => void }> = ({ machine, index, onClick }) => (
+  <div onClick={onClick} className="bg-white rounded-3xl overflow-hidden shadow-2xl md:max-w-4xl mx-auto transform transition-transform hover:scale-[1.01] duration-300 border border-gray-100 cursor-pointer">
     <div className="grid md:grid-cols-2">
       <div className="h-64 md:h-auto relative overflow-hidden group">
         <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
@@ -45,8 +45,8 @@ const HorizontalCard: React.FC<{ machine: Machine; index: number }> = ({ machine
 );
 
 // 2. Vertical Card (Mining) - Imposing, Hero-style for Giant Machines
-const VerticalCard: React.FC<{ machine: Machine; index: number }> = ({ machine, index }) => (
-  <div className="bg-stone-900 rounded-3xl overflow-hidden shadow-2xl md:max-w-2xl mx-auto border border-stone-800 group">
+const VerticalCard: React.FC<{ machine: Machine; index: number; onClick: () => void }> = ({ machine, index, onClick }) => (
+  <div onClick={onClick} className="bg-stone-900 rounded-3xl overflow-hidden shadow-2xl md:max-w-2xl mx-auto border border-stone-800 group cursor-pointer">
     <div className="h-80 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-t from-stone-900 to-transparent z-10"></div>
       <img
@@ -78,8 +78,8 @@ const VerticalCard: React.FC<{ machine: Machine; index: number }> = ({ machine, 
 );
 
 // 3. Compact Card (Logistics) - Image Overlay Style
-const CompactCard: React.FC<{ machine: Machine; index: number }> = ({ machine, index }) => (
-  <div className="relative h-96 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group cursor-pointer">
+const CompactCard: React.FC<{ machine: Machine; index: number; onClick: () => void }> = ({ machine, index, onClick }) => (
+  <div onClick={onClick} className="relative h-96 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group cursor-pointer">
     {/* Background Image */}
     <div className="absolute inset-0">
       <img
@@ -167,7 +167,7 @@ const SectorItem: React.FC<SectorItemProps> = ({ sector, onNavigate }) => {
         </p>
         <div
           onClick={() => onNavigate('machines')}
-          className="hidden md:flex items-center text-industrial-yellow font-bold group cursor-pointer"
+          className="flex items-center text-industrial-yellow font-bold group cursor-pointer"
         >
           <span className="ml-2 group-hover:underline">تصفح الآلات</span>
           <ArrowLeft size={20} className="animate-bounce-x" />
@@ -190,7 +190,7 @@ const SectorItem: React.FC<SectorItemProps> = ({ sector, onNavigate }) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <CompactCard machine={machine} index={index} />
+                <CompactCard machine={machine} index={index} onClick={() => onNavigate('machines')} />
               </motion.div>
             ))}
           </div>
@@ -209,9 +209,9 @@ const SectorItem: React.FC<SectorItemProps> = ({ sector, onNavigate }) => {
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
                 {isMining ? (
-                  <VerticalCard machine={machine} index={index} />
+                  <VerticalCard machine={machine} index={index} onClick={() => onNavigate('machines')} />
                 ) : (
-                  <HorizontalCard machine={machine} index={index} />
+                  <HorizontalCard machine={machine} index={index} onClick={() => onNavigate('machines')} />
                 )}
               </motion.div>
             </div>
@@ -263,8 +263,11 @@ const Sectors: React.FC<SectorsProps> = ({ onNavigate }) => {
           <p className="text-slate-400 max-w-2xl mx-auto text-lg">
             تريد أن تصبح مشغّل حفّارة، لودر، أو شاحنة نقل؟
           </p>
-          <p className="text-slate-500 mt-2">
-            برامجنا العملية تغطي كل الآلات في قطاعات : البناء، النقل، المناجم، الموانئ والمزيد
+          <p className="text-slate-400 max-w-2xl mx-auto text-lg mt-2">
+            برامجنا العملية تغطي كل الآلات في قطاعات البناء، النقل، المناجم، والموانئ.
+          </p>
+          <p className="text-slate-400 max-w-2xl mx-auto text-lg mt-4">
+            يضم معهدنا أسطولاً كاملاً من الآلات الحديثة لضمان تدريب عملي واقعي ومطابق لظروف العمل الحقيقية.
           </p>
         </div>
         {SECTORS.map((sector) => (

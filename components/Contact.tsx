@@ -44,7 +44,7 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 mb-1">اتصل بنا</p>
-                    <p className="text-xl font-bold text-white dir-ltr text-right">+213 550 00 00 00</p>
+                    <p className="text-xl font-bold text-white dir-rtl text-right">0770526454</p>
                   </div>
                 </div>
 

@@ -189,17 +189,18 @@ export const FAQS: FAQItem[] = [
   }
 ];
 
-import { Phone, X, Copy, Check, MessageCircle, User, Briefcase, HelpCircle, FileText, Gamepad2, Construction } from 'lucide-react';
+import {  MessageCircle, User, Briefcase, HelpCircle, FileText, Gamepad2, Construction } from 'lucide-react';
 import { ContactNumber, JourneyStep } from './types';
-import React from 'react';
 
 export const CONTACT_NUMBERS: ContactNumber[] = [
-  { id: '1', label: 'الاستقبال والتوجيه', number: '0550 12 34 56', icon: <HelpCircle size={18} />, color: 'text-blue-400' },
-  { id: '2', label: 'التسجيلات (مكتب 1)', number: '0550 98 76 54', icon: <User size={18} />, color: 'text-green-400' },
-  { id: '3', label: 'التسجيلات (مكتب 2)', number: '0551 23 45 67', icon: <User size={18} />, color: 'text-green-400' },
-  { id: '4', label: 'عروض الشركات', number: '0552 34 56 78', icon: <Briefcase size={18} />, color: 'text-purple-400' },
-  { id: '5', label: 'الإدارة العامة', number: '0553 45 67 89', icon: <Briefcase size={18} />, color: 'text-purple-400' },
-  { id: '6', label: 'الدعم التقني', number: '0554 56 78 90', icon: <MessageCircle size={18} />, color: 'text-yellow-400' },
+    { id: '0',label: 'الإدارة العامة', number: '0770526454', icon: <MessageCircle size={18} />, color: 'text-yellow-400' },
+    { id: '1', label: 'قسنطينة - خنشلة', number: '0556584780', icon: <HelpCircle size={18} />, color: 'text-green-400' },
+
+  { id: '2', label: 'قسنطينة', number: '0658220079', icon: <User size={18} />, color: 'text-green-400' },
+  { id: '3', label: 'قسنطينة', number: '0799322981', icon: <User size={18} />, color: 'text-blue-400' },
+
+  { id: '4', label: 'خنشلة', number: '0799322981', icon: <Briefcase size={18} />, color: 'text-purple-400' },
+  { id: '5', label: 'خنشلة', number: '0555344925', icon: <Briefcase size={18} />, color: 'text-purple-400' },
 ];
 
 export const JOURNEY_STEPS: JourneyStep[] = [
