@@ -1,11 +1,26 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Send, Check } from 'lucide-react';
+import { SECTORS } from '../constants';
+import { useState } from 'react';
 
 interface ContactProps {
   onNavigate?: (page: string) => void;
 }
 
 const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
+  const [selectedMachines, setSelectedMachines] = useState<string[]>([]);
+
+  // Flatten all machines from sectors
+  const allMachines = SECTORS.flatMap(sector => sector.machines);
+
+  const toggleMachine = (machineId: string) => {
+    setSelectedMachines(prev =>
+      prev.includes(machineId)
+        ? prev.filter(id => id !== machineId)
+        : [...prev, machineId]
+    );
+  };
+
   return (
     <>
       {/* CTA Section */}
@@ -125,10 +140,49 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                     <option>استفسار عام</option>
                   </select>
                 </div>
-
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">الرسالة</label>
-                  <textarea rows={4} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-industrial-yellow focus:border-transparent outline-none transition-all" placeholder="كيف يمكننا مساعدتك؟"></textarea>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    الولاية
+                  </label>
+                  <select className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-industrial-yellow focus:border-transparent outline-none transition-all">
+                    <option>
+                      ام البواقي                      </option>
+                    <option>خنشلة </option>
+                    <option>
+                      خنشلة                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-4">
+                    الآلات التي ترغب في التدرب عليها
+                    <span className="text-xs font-normal text-gray-500 mr-2">(يمكنك اختيار أكثر من آلة)</span>
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                    {allMachines.map((machine) => (
+                      <button
+                        key={machine.id}
+                        type="button"
+                        onClick={() => toggleMachine(machine.id)}
+                        className={`
+                          relative flex items-center justify-center p-3 rounded-xl border-2 transition-all duration-200 group
+                          ${selectedMachines.includes(machine.id)
+                            ? 'border-industrial-yellow bg-industrial-yellow/10 text-slate-900'
+                            : 'border-gray-100 bg-gray-50 text-gray-600 hover:border-gray-300'
+                          }
+                        `}
+                      >
+                        <span className="text-sm font-bold text-center">{machine.name}</span>
+                        {selectedMachines.includes(machine.id) && (
+                          <div className="absolute -top-2 -right-2 bg-industrial-yellow text-black rounded-full p-0.5 shadow-sm">
+                            <Check size={12} strokeWidth={3} />
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  {selectedMachines.length === 0 && (
+                    <p className="text-xs text-red-400 mt-2 mr-1 hidden">يرجى اختيار آلة واحدة على الأقل</p>
+                  )}
                 </div>
 
                 <button className="w-full bg-industrial-dark text-white font-bold py-4 rounded-xl hover:bg-black transition-colors flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-1">

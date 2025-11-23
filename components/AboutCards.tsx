@@ -13,8 +13,8 @@ const AboutCards: React.FC = () => {
 
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Program Card */}
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
@@ -42,16 +42,16 @@ const AboutCards: React.FC = () => {
           </motion.div>
 
           {/* Features Card */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="bg-industrial-dark text-white p-8 rounded-2xl shadow-xl border-r-4 border-gray-600 hover:shadow-2xl transition-shadow relative overflow-hidden"
           >
-             {/* Decorative background icon */}
-             <Award className="absolute -bottom-10 -left-10 text-gray-800 opacity-20 w-64 h-64" />
-             
+            {/* Decorative background icon */}
+            <Award className="absolute -bottom-10 -left-10 text-gray-800 opacity-20 w-64 h-64" />
+
             <div className="flex items-center gap-4 mb-6 relative z-10">
               <div className="p-3 bg-gray-700 rounded-lg text-gray-200">
                 <Award size={32} />

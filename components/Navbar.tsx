@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Home, Calendar, Wrench } from 'lucide-react';
-import logo from '../assets/images/AG-logo.png';
+import logo from '../assets/images/logo-text.png';
 
 interface NavbarProps {
     onNavigate: (view: string) => void;
