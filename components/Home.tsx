@@ -10,21 +10,17 @@ import { Journey } from './Journey';
 import StickyContact from './StickyContact';
 import HeroParallax from './HeroParallax';
 
-interface HomeProps {
-    onNavigate: (page: string) => void;
-}
-
-const Home: React.FC<HomeProps> = ({ onNavigate }) => {
+const Home: React.FC = () => {
     return (
         <>
             <HeroParallax />
             <Stats />
-            <Sectors onNavigate={onNavigate} />
+            <Sectors />
             <Journey />
             <AudienceSplit />
             <AboutCards />
             <FAQ />
-            <Contact onNavigate={onNavigate} />
+            <Contact />
             <AIChat />
             <StickyContact />
         </>

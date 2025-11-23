@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
     ArrowRight,
@@ -10,14 +10,32 @@ import {
     MessageCircle,
     Play
 } from 'lucide-react';
-import { Machine } from '../types';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { machines } from '../constants';
 
-interface MachineDetailProps {
-    machine: Machine;
-    onBack: () => void;
-}
+const MachineDetail: React.FC = () => {
+    const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
+    const machine = machines.find(m => m.id === id);
 
-const MachineDetail: React.FC<MachineDetailProps> = ({ machine, onBack }) => {
+    useEffect(() => {
+        if (machine) {
+            document.title = machine.seoTitle || `تدريب ${machine.name} | Dzair Formation`;
+            // In a real app with Helmet, we would set meta description here
+        }
+    }, [machine]);
+
+    if (!machine) {
+        return (
+            <div className="min-h-screen bg-industrial-dark flex flex-col items-center justify-center text-white">
+                <h2 className="text-3xl font-bold mb-4">الآلة غير موجودة</h2>
+                <button onClick={() => navigate('/machines')} className="text-industrial-yellow hover:underline">
+                    العودة للكتالوغ
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-industrial-dark text-white font-sans" dir="rtl">
             {/* 1) Hero Section */}
@@ -43,7 +61,7 @@ const MachineDetail: React.FC<MachineDetailProps> = ({ machine, onBack }) => {
                     <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden">
                         <div className="absolute inset-0 bg-yellow-900/40 mix-blend-multiply z-10" />
                         <img
-                            src={machine.imageUrl}
+                            src={machine.parallaxAsset || machine.imageUrl}
                             alt="Field View"
                             className="w-full h-full object-cover"
                         />
@@ -63,14 +81,14 @@ const MachineDetail: React.FC<MachineDetailProps> = ({ machine, onBack }) => {
                         transition={{ duration: 0.8 }}
                         className="max-w-4xl"
                     >
-                        <button
-                            onClick={onBack}
-                            className="absolute top-8 right-8 flex items-center text-gray-300 hover:text-white transition-colors"
+                        <Link
+                            to="/machines"
+                            className="absolute top-24 right-8 md:top-8 flex items-center text-gray-300 hover:text-white transition-colors z-50"
                         >
                             <ArrowRight className="ml-2" /> العودة للكتالوغ
-                        </button>
+                        </Link>
 
-                        <div className="inline-flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 px-4 py-2  mb-6 backdrop-blur-md">
+                        <div className="inline-flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 px-4 py-2  mb-6 backdrop-blur-md mt-16 md:mt-0">
                             <BrainCircuit size={18} className="text-blue-400" />
                             <span className="text-blue-200 text-sm font-bold">منهج تدريبي معزز بـ AI</span>
                         </div>
@@ -84,10 +102,10 @@ const MachineDetail: React.FC<MachineDetailProps> = ({ machine, onBack }) => {
                         </h1>
 
                         <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
-                            بدون خبرة مسبقة — نرافقك حتى تتقن التحكم في الآلة بأمان واحترافية.
+                            {machine.longDescription || machine.shortDescription}
                         </p>
 
-                        <button className="bg-industrial-yellow text-black text-lg font-bold px-10 py-4 rounded-xl hover:bg-yellow-400 transition-all transform hover:scale-105 shadow-lg shadow-yellow-500/20">
+                        <button onClick={() => document.getElementById('register')?.scrollIntoView({ behavior: 'smooth' })} className="bg-industrial-yellow text-black text-lg font-bold px-10 py-4 rounded-xl hover:bg-yellow-400 transition-all transform hover:scale-105 shadow-lg shadow-yellow-500/20">
                             ابدأ رحلتك في قيادة {machine.name}
                         </button>
                     </motion.div>
@@ -107,14 +125,14 @@ const MachineDetail: React.FC<MachineDetailProps> = ({ machine, onBack }) => {
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {[
+                        {(machine.skills || [
                             "مهارات التحكم الأساسية والمتقدمة",
                             "قراءة البيئة الميدانية",
                             "المناورات الصعبة في مساحة ضيقة",
                             "قواعد الأمان المهنية",
                             "تشغيل الآلة في ظروف مختلفة",
                             "أخطاء المتدربين الجدد وكيف تتجنبها"
-                        ].map((skill, i) => (
+                        ]).map((skill, i) => (
                             <motion.div
                                 key={i}
                                 initial={{ opacity: 0, y: 20 }}
@@ -223,7 +241,7 @@ const MachineDetail: React.FC<MachineDetailProps> = ({ machine, onBack }) => {
                     <div className="order-1 md:order-2 relative">
                         <div className="absolute -inset-4 bg-industrial-yellow/20 rounded-3xl blur-xl" />
                         <img
-                            src={machine.imageUrl}
+                            src={machine.parallaxAsset || machine.imageUrl}
                             alt="Field Training"
                             className="relative rounded-2xl shadow-2xl border border-stone-800 w-full"
                         />
@@ -259,27 +277,22 @@ const MachineDetail: React.FC<MachineDetailProps> = ({ machine, onBack }) => {
                 </div>
             </section>
 
-            {/* 6) Gallery Section (Placeholder using same image for now) */}
-            <section className="py-20 px-6 bg-stone-950">
-                <div className="max-w-7xl mx-auto">
-                    <h2 className="text-3xl font-bold mb-10 border-r-4 border-industrial-yellow pr-4">معرض الصور</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 h-96">
-                        <div className="col-span-2 row-span-2 relative rounded-2xl overflow-hidden group">
-                            <img src={machine.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="" />
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                        </div>
-                        <div className="col-span-1 row-span-1 relative rounded-2xl overflow-hidden group">
-                            <img src={machine.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0" alt="" />
-                        </div>
-                        <div className="col-span-1 row-span-1 relative rounded-2xl overflow-hidden group">
-                            <img src={machine.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0" alt="" />
-                        </div>
-                        <div className="col-span-2 row-span-1 relative rounded-2xl overflow-hidden group">
-                            <img src={machine.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0" alt="" />
+            {/* 6) Gallery Section */}
+            {machine.gallery && machine.gallery.length > 0 && (
+                <section className="py-20 px-6 bg-stone-950">
+                    <div className="max-w-7xl mx-auto">
+                        <h2 className="text-3xl font-bold mb-10 border-r-4 border-industrial-yellow pr-4">معرض الصور</h2>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 h-96">
+                            {machine.gallery.map((img, index) => (
+                                <div key={index} className={`relative rounded-2xl overflow-hidden group ${index === 0 ? 'col-span-2 row-span-2' : 'col-span-1 row-span-1'}`}>
+                                    <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={`${machine.name} ${index + 1}`} />
+                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                                </div>
+                            ))}
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             {/* 7) FAQ */}
             <section className="py-20 px-6 bg-stone-900">
@@ -288,7 +301,7 @@ const MachineDetail: React.FC<MachineDetailProps> = ({ machine, onBack }) => {
                     <div className="space-y-4">
                         {[
                             { q: "هل لازم عندي خبرة سابقة؟", a: "لا، البرنامج مصمم للمبتدئين ويبدأ معك من الصفر." },
-                            { q: "كم مدة التدريب؟", a: "تتراوح بين 3 أسابيع (مكثف) إلى 3 أشهر حسب مستواك وتفرغك." },
+                            { q: "كم مدة التدريب؟", a: machine.durationDays ? `${machine.durationDays} أيام مكثفة.` : "تتراوح بين 3 أسابيع (مكثف) إلى 3 أشهر حسب مستواك وتفرغك." },
                             { q: "هل الشهادة معترف بها؟", a: "نعم، شهادة معتمدة من الدولة وتؤهلك للعمل في الشركات الوطنية والخاصة." },
                             { q: "هل التدريب يشمل المحاكاة فقط؟", a: "لا، المحاكاة هي مرحلة أولى فقط. التدريب الميداني على الآلات الحقيقية جزء أساسي." }
                         ].map((faq, i) => (
@@ -302,8 +315,8 @@ const MachineDetail: React.FC<MachineDetailProps> = ({ machine, onBack }) => {
             </section>
 
             {/* 8) Final CTA */}
-            <section className="py-24 px-6 bg-industrial-yellow text-black text-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-pattern opacity-10" /> {/* Placeholder for pattern */}
+            <section id="register" className="py-24 px-6 bg-industrial-yellow text-black text-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-pattern opacity-10" />
                 <div className="relative z-10 max-w-3xl mx-auto">
                     <h2 className="text-4xl md:text-6xl font-black mb-6">جاهز تتعلم قيادة {machine.name}؟</h2>
                     <p className="text-xl font-medium mb-10 opacity-80">
@@ -311,13 +324,13 @@ const MachineDetail: React.FC<MachineDetailProps> = ({ machine, onBack }) => {
                     </p>
 
                     <div className="flex flex-col md:flex-row gap-4 justify-center">
-                        <button className="bg-black text-white text-lg font-bold px-8 py-4 rounded-xl hover:bg-gray-900 transition-colors shadow-xl">
+                        <Link to="/contact" className="bg-black text-white text-lg font-bold px-8 py-4 rounded-xl hover:bg-gray-900 transition-colors shadow-xl">
                             سجّل اهتمامك الآن
-                        </button>
-                        <button className="bg-green-600 text-white text-lg font-bold px-8 py-4 rounded-xl hover:bg-green-700 transition-colors flex items-center justify-center gap-2 shadow-xl">
+                        </Link>
+                        <a href="https://wa.me/213770526454" className="bg-green-600 text-white text-lg font-bold px-8 py-4 rounded-xl hover:bg-green-700 transition-colors flex items-center justify-center gap-2 shadow-xl">
                             <MessageCircle size={24} />
                             تواصل عبر واتساب
-                        </button>
+                        </a>
                     </div>
                 </div>
             </section>

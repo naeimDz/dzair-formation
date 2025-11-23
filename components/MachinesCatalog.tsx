@@ -2,29 +2,25 @@ import React from 'react';
 
 import { motion } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Search } from 'lucide-react';
-import { SECTORS } from '../constants';
+import { machines } from '../constants';
 import { Machine } from '../types';
+import { Link } from 'react-router-dom';
 
-interface MachinesCatalogProps {
-    onBack: () => void;
-    onSelectMachine: (machine: Machine) => void;
-}
-
-const MachinesCatalog: React.FC<MachinesCatalogProps> = ({ onBack, onSelectMachine }) => {
-    // Flatten all machines from all sectors
-    const allMachines = SECTORS.flatMap(sector => sector.machines);
+const MachinesCatalog: React.FC = () => {
+    // Use the machines constant directly
+    const allMachines = machines;
 
     return (
         <div className="min-h-screen bg-industrial-dark text-white pt-20 pb-20 px-4 md:px-8">
             {/* Header Section */}
             <div className="max-w-7xl mx-auto mb-12">
-                <button
-                    onClick={onBack}
-                    className="flex items-center text-gray-400 hover:text-industrial-yellow transition-colors mb-8 group"
+                <Link
+                    to="/"
+                    className="flex items-center text-gray-400 hover:text-industrial-yellow transition-colors mb-8 group w-fit"
                 >
                     <ArrowRight className="ml-2 group-hover:-translate-x-1 transition-transform" size={20} />
                     <span>العودة للرئيسية</span>
-                </button>
+                </Link>
 
                 <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-gray-800 pb-8">
                     <div>
@@ -57,7 +53,6 @@ const MachinesCatalog: React.FC<MachinesCatalogProps> = ({ onBack, onSelectMachi
                         key={machine.id}
                         machine={machine}
                         index={index}
-                        onSelect={onSelectMachine}
                     />
                 ))}
             </div>
@@ -68,49 +63,48 @@ const MachinesCatalog: React.FC<MachinesCatalogProps> = ({ onBack, onSelectMachi
 const MachineCard: React.FC<{
     machine: Machine;
     index: number;
-    onSelect: (machine: Machine) => void;
-}> = ({ machine, index, onSelect }) => {
+}> = ({ machine, index }) => {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            onClick={() => onSelect(machine)}
-            className="group bg-stone-900 rounded-2xl overflow-hidden border border-stone-800 hover:border-industrial-yellow/50 transition-all duration-300 hover:shadow-2xl hover:shadow-industrial-yellow/10 flex flex-col cursor-pointer"
+            className="group bg-stone-900 rounded-2xl overflow-hidden border border-stone-800 hover:border-industrial-yellow/50 transition-all duration-300 hover:shadow-2xl hover:shadow-industrial-yellow/10 flex flex-col"
         >
-            {/* Image Container */}
-            <div className="relative h-64 overflow-hidden bg-stone-950">
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900 to-transparent z-10 opacity-60" />
-                <img
-                    src={machine.imageUrl}
-                    alt={machine.name}
-                    className="w-full h-full object-contain p-4 transform group-hover:scale-110 transition-transform duration-500"
-                />
-                {machine.highlight && (
-                    <div className="absolute top-4 right-4 z-20 bg-industrial-yellow/90 text-black text-xs font-bold px-3 py-1  backdrop-blur-sm">
-                        {machine.highlight}
+            <Link to={`/machines/${machine.id}`} className="flex-1 flex flex-col">
+                {/* Image Container */}
+                <div className="relative h-64 overflow-hidden bg-stone-950">
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900 to-transparent z-10 opacity-60" />
+                    <img
+                        src={machine.imageUrl}
+                        alt={machine.name}
+                        className="w-full h-full object-contain p-4 transform group-hover:scale-110 transition-transform duration-500"
+                    />
+                    {machine.highlight && (
+                        <div className="absolute top-4 right-4 z-20 bg-industrial-yellow/90 text-black text-xs font-bold px-3 py-1  backdrop-blur-sm">
+                            {machine.highlight}
+                        </div>
+                    )}
+                </div>
+
+                {/* Content */}
+                <div className="p-6 flex-1 flex flex-col">
+                    <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-industrial-yellow transition-colors">
+                        {machine.name}
+                    </h3>
+                    <p className="text-gray-400 text-sm mb-6 line-clamp-2 flex-1">
+                        {machine.shortDescription}
+                    </p>
+
+                    <div
+                        className="w-full py-3 rounded-xl bg-stone-800 text-white font-bold flex items-center justify-center gap-2 group-hover:bg-industrial-yellow group-hover:text-black transition-all duration-300"
+                    >
+                        <span>اكتشف المزيد</span>
+                        <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                     </div>
-                )}
-            </div>
-
-            {/* Content */}
-            <div className="p-6 flex-1 flex flex-col">
-                <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-industrial-yellow transition-colors">
-                    {machine.name}
-                </h3>
-                <p className="text-gray-400 text-sm mb-6 line-clamp-2 flex-1">
-                    {machine.shortDescription}
-                </p>
-
-                <button
-                    onClick={() => onSelect(machine)}
-                    className="w-full py-3 rounded-xl bg-stone-800 text-white font-bold flex items-center justify-center gap-2 group-hover:bg-industrial-yellow group-hover:text-black transition-all duration-300"
-                >
-                    <span>اكتشف المزيد</span>
-                    <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                </button>
-            </div>
+                </div>
+            </Link>
         </motion.div>
     );
 };

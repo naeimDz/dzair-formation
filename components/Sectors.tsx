@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { SECTORS } from '../constants';
 import { ArrowLeft } from 'lucide-react';
 import { Sector, Machine } from '../types';
@@ -117,10 +118,10 @@ const CompactCard: React.FC<{ machine: Machine; index: number; onClick: () => vo
 
 interface SectorItemProps {
   sector: Sector;
-  onNavigate: (page: string) => void;
 }
 
-const SectorItem: React.FC<SectorItemProps> = ({ sector, onNavigate }) => {
+const SectorItem: React.FC<SectorItemProps> = ({ sector }) => {
+  const navigate = useNavigate();
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -166,7 +167,7 @@ const SectorItem: React.FC<SectorItemProps> = ({ sector, onNavigate }) => {
           {sector.description}
         </p>
         <div
-          onClick={() => onNavigate('machines')}
+          onClick={() => navigate('/machines')}
           className="flex items-center text-industrial-yellow font-bold group cursor-pointer"
         >
           <span className="ml-2 group-hover:underline">تصفح الآلات</span>
@@ -190,7 +191,7 @@ const SectorItem: React.FC<SectorItemProps> = ({ sector, onNavigate }) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <CompactCard machine={machine} index={index} onClick={() => onNavigate('machines')} />
+                <CompactCard machine={machine} index={index} onClick={() => navigate('/machines')} />
               </motion.div>
             ))}
           </div>
@@ -209,9 +210,9 @@ const SectorItem: React.FC<SectorItemProps> = ({ sector, onNavigate }) => {
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
                 {isMining ? (
-                  <VerticalCard machine={machine} index={index} onClick={() => onNavigate('machines')} />
+                  <VerticalCard machine={machine} index={index} onClick={() => navigate('/machines')} />
                 ) : (
-                  <HorizontalCard machine={machine} index={index} onClick={() => onNavigate('machines')} />
+                  <HorizontalCard machine={machine} index={index} onClick={() => navigate('/machines')} />
                 )}
               </motion.div>
             </div>
@@ -224,11 +225,8 @@ const SectorItem: React.FC<SectorItemProps> = ({ sector, onNavigate }) => {
   );
 };
 
-interface SectorsProps {
-  onNavigate: (page: string) => void;
-}
-
-const Sectors: React.FC<SectorsProps> = ({ onNavigate }) => {
+const Sectors: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       <section className="py-24 px-6 bg-yellow-500 text-slate-900 relative overflow-hidden">
@@ -240,13 +238,13 @@ const Sectors: React.FC<SectorsProps> = ({ onNavigate }) => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => onNavigate?.('schedule')}
+              onClick={() => navigate('/schedule')}
               className="px-8 py-4 bg-slate-900 text-white hover:bg-slate-800 font-bold rounded-xl text-lg shadow-xl transition-transform transform hover:scale-105"
             >
               مواعيد الدورات
             </button>
             <button
-              onClick={() => onNavigate?.('contact')}
+              onClick={() => navigate('/contact')}
               className="px-8 py-4 bg-white text-slate-900 hover:bg-slate-100 font-bold rounded-xl text-lg shadow-xl transition-transform transform hover:scale-105"
             >
               سجل اللآن
@@ -261,17 +259,17 @@ const Sectors: React.FC<SectorsProps> = ({ onNavigate }) => {
           </div>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">اختر تخصصك المستقبلي</h2>
           <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-            تريد أن تصبح مشغّل حفّارة، لودر، أو شاحنة نقل؟
+            تريد أن تصبح مشغّل حفّارة، لودر؟
           </p>
           <p className="text-slate-400 max-w-2xl mx-auto text-lg mt-2">
-            برامجنا العملية تغطي كل الآلات في قطاعات البناء، النقل، المناجم، والموانئ.
+            برامجنا العملية تغطي كل الآلات في قطاعات البناء، المناجم، والموانئ.
           </p>
           <p className="text-slate-400 max-w-2xl mx-auto text-lg mt-4">
             يضم معهدنا أسطولاً كاملاً من الآلات الحديثة لضمان تدريب عملي واقعي ومطابق لظروف العمل الحقيقية.
           </p>
         </div>
         {SECTORS.map((sector) => (
-          <SectorItem key={sector.id} sector={sector} onNavigate={onNavigate} />
+          <SectorItem key={sector.id} sector={sector} />
         ))}
       </div>
     </>

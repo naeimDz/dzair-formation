@@ -1,13 +1,9 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Send, Check } from 'lucide-react';
-import { SECTORS } from '../constants';
+import { SECTORS, WILAYAS } from '../constants';
 import { useState } from 'react';
 
-interface ContactProps {
-  onNavigate?: (page: string) => void;
-}
-
-const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
+const Contact: React.FC = () => {
   const [selectedMachines, setSelectedMachines] = useState<string[]>([]);
 
   // Flatten all machines from sectors
@@ -126,11 +122,12 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                     الولاية
                   </label>
                   <select className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-industrial-yellow focus:border-transparent outline-none transition-all">
-                    <option>
-                      ام البواقي                      </option>
-                    <option>خنشلة </option>
-                    <option>
-                      خنشلة                    </option>
+                    <option value="">اختر الولاية</option>
+                    {WILAYAS.map((wilaya, index) => (
+                      <option key={index} value={wilaya}>
+                        {index + 1} - {wilaya}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>

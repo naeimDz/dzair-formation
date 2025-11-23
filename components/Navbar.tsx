@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Home, Calendar, Wrench } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/fiinale-finale.png';
 
-interface NavbarProps {
-    onNavigate: (view: string) => void;
-    currentView: string;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
+const Navbar: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
 
     // Handle scroll effect
     useEffect(() => {
@@ -26,13 +24,17 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
     }, []);
 
     const navLinks = [
-        { id: 'home', label: 'الرئيسية', icon: Home },
-        { id: 'schedule', label: 'برنامج الدورات', icon: Calendar },
-        { id: 'machines', label: 'الآلات', icon: Wrench },
+        { path: '/', label: 'الرئيسية', icon: Home },
+        { path: '/schedule', label: 'برنامج الدورات', icon: Calendar },
+        { path: '/machines', label: 'الآلات', icon: Wrench },
     ];
 
-    const handleNavClick = (view: string) => {
-        onNavigate(view);
+    const isActive = (path: string) => {
+        if (path === '/' && location.pathname !== '/') return false;
+        return location.pathname.startsWith(path);
+    };
+
+    const handleNavClick = () => {
         setIsMobileMenuOpen(false);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -49,16 +51,17 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                     <div className="flex items-center justify-between flex-row-reverse relative">
                         {/* Logo */}
                         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0 md:transform-none z-10">
-                            <div
+                            <Link
+                                to="/"
                                 className="cursor-pointer flex items-center"
-                                onClick={() => handleNavClick('home')}
+                                onClick={handleNavClick}
                             >
                                 <img
                                     src={logo}
                                     alt="Dzair Formation"
                                     className={`transition-all duration-300 ${isScrolled ? 'h-10 md:h-16' : 'h-14 md:h-32'}`}
                                 />
-                            </div >
+                            </Link >
                         </div>
 
                         {/* Desktop Navigation */}
@@ -66,22 +69,23 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                             {
                                 navLinks.map((link) => {
                                     const Icon = link.icon;
-                                    const isActive = currentView === link.id;
+                                    const active = isActive(link.path);
                                     return (
-                                        <button
-                                            key={link.id}
-                                            onClick={() => handleNavClick(link.id)}
-                                            className={`relative px-4 py-2 flex items-center gap-2 transition-all duration-300 group ${isActive
+                                        <Link
+                                            key={link.path}
+                                            to={link.path}
+                                            onClick={handleNavClick}
+                                            className={`relative px-4 py-2 flex items-center gap-2 transition-all duration-300 group ${active
                                                 ? 'text-industrial-yellow bg-white/5 font-bold'
                                                 : 'text-gray-300 hover:text-white hover:bg-white/5'
                                                 }`}
                                         >
-                                            <Icon size={18} className={isActive ? 'text-industrial-yellow' : 'text-gray-400 group-hover:text-white'} />
+                                            <Icon size={18} className={active ? 'text-industrial-yellow' : 'text-gray-400 group-hover:text-white'} />
                                             <span>{link.label}</span>
-                                            {isActive && (
+                                            {active && (
                                                 <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-industrial-yellow  mx-4" />
                                             )}
-                                        </button>
+                                        </Link>
                                     );
                                 })
                             }
@@ -98,12 +102,13 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                                     </span>
                                 </div>
 
-                                <button
-                                    onClick={() => handleNavClick('contact')}
+                                <Link
+                                    to="/contact"
+                                    onClick={handleNavClick}
                                     className="bg-white/10 text-white px-5 py-2 font-bold hover:bg-white/20 transition-colors border border-white/10"
                                 >
                                     اتصل بنا
-                                </button>
+                                </Link>
                             </div>
                         </div >
 
@@ -116,12 +121,13 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                         </button >
 
                         {/* Mobile Register Button */}
-                        <button
-                            onClick={() => handleNavClick('contact')}
+                        <Link
+                            to="/contact"
+                            onClick={handleNavClick}
                             className="md:hidden bg-industrial-yellow text-industrial-dark px-3 py-1.5 font-bold hover:bg-yellow-400 transition-colors shadow-lg text-xs whitespace-nowrap"
                         >
                             سجل الآن
-                        </button>
+                        </Link>
                     </div >
                 </div>
             </nav>
@@ -152,33 +158,34 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                     <div className="flex flex-col space-y-2">
                         {navLinks.map((link) => {
                             const Icon = link.icon;
-                            const isActive = currentView === link.id;
+                            const active = isActive(link.path);
                             return (
-                                <button
-                                    key={link.id}
-                                    onClick={() => handleNavClick(link.id)}
-                                    className={`flex items-center gap-3 px-4 py-3 transition-colors ${isActive
+                                <Link
+                                    key={link.path}
+                                    to={link.path}
+                                    onClick={handleNavClick}
+                                    className={`flex items-center gap-3 px-4 py-3 transition-colors ${active
                                         ? 'bg-industrial-yellow/10 text-industrial-yellow border-r-4 border-industrial-yellow'
                                         : 'text-gray-300 hover:bg-white/5 hover:text-white'
                                         }`}
                                 >
                                     <Icon size={20} />
                                     <span className="font-medium">{link.label}</span>
-                                </button>
+                                </Link>
                             );
                         })}
 
                         <div className="my-4 border-t border-white/10" />
 
-                        <button
+                        <Link
+                            to="/contact"
                             onClick={() => {
                                 setIsMobileMenuOpen(false);
-                                handleNavClick('contact');
                             }}
                             className="bg-industrial-yellow text-industrial-dark px-4 py-3 font-bold text-center hover:bg-yellow-400 transition-colors"
                         >
                             سجل الآن
-                        </button>
+                        </Link>
                     </div>
 
                     <div className="mt-auto text-center text-gray-500 text-sm">

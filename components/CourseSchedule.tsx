@@ -1,13 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Calendar, MapPin, Building2, Clock, AlertCircle, CheckCircle2, XCircle } from 'lucide-react';
 import { COURSES } from '../constants';
 import { Reveal } from './Reveal';
 
-interface CourseScheduleProps {
-    onBack: () => void;
-}
-
-const CourseSchedule: React.FC<CourseScheduleProps> = ({ onBack }) => {
+const CourseSchedule: React.FC = () => {
+    const navigate = useNavigate();
     const getStatusConfig = (status: string) => {
         switch (status) {
             case 'open':
@@ -27,7 +25,7 @@ const CourseSchedule: React.FC<CourseScheduleProps> = ({ onBack }) => {
                 {/* Header */}
                 <div className="mb-12">
                     <button
-                        onClick={onBack}
+                        onClick={() => navigate('/')}
                         className="flex items-center gap-2 text-slate-400 hover:text-yellow-500 transition-colors mb-6 group"
                     >
                         <ArrowRight className="group-hover:-translate-x-1 transition-transform" />

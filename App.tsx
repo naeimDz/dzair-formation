@@ -1,47 +1,33 @@
-import React, { useState } from 'react';
+import { SpeedInsights } from "@vercel/speed-insights/react"
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import CourseSchedule from './components/CourseSchedule';
 import MachinesCatalog from './components/MachinesCatalog';
 import MachineDetail from './components/MachineDetail';
 import Navbar from './components/Navbar';
 import Contact from './components/Contact';
-import { Machine } from './types';
 
-function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'schedule' | 'machines' | 'machine-detail' | 'contact'>('home');
-  const [selectedMachine, setSelectedMachine] = useState<Machine | null>(null);
-
-  const handleMachineSelect = (machine: Machine) => {
-    setSelectedMachine(machine);
-    setCurrentView('machine-detail');
-  };
-
+function AppContent() {
   return (
     <div className="min-h-screen w-full bg-industrial-dark font-sans text-right" dir="rtl">
-      <Navbar
-        currentView={currentView}
-        onNavigate={(view) => setCurrentView(view as any)}
-      />
-      {currentView === 'home' ? (
-        <Home onNavigate={(page) => setCurrentView(page as any)} />
-      ) : currentView === 'schedule' ? (
-        <CourseSchedule onBack={() => setCurrentView('home')} />
-      ) : currentView === 'machines' ? (
-        <MachinesCatalog
-          onBack={() => setCurrentView('home')}
-          onSelectMachine={handleMachineSelect}
-        />
-      ) : currentView === 'contact' ? (
-        <Contact onNavigate={(page) => setCurrentView(page as any)} />
-      ) : (
-        selectedMachine && (
-          <MachineDetail
-            machine={selectedMachine}
-            onBack={() => setCurrentView('machines')}
-          />
-        )
-      )}
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/schedule" element={<CourseSchedule />} />
+        <Route path="/machines" element={<MachinesCatalog />} />
+        <Route path="/machines/:id" element={<MachineDetail />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+      <SpeedInsights />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 
