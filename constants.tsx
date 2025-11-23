@@ -69,7 +69,7 @@ export const SECTORS: Sector[] = [
         longDescription: "محاكي الحفار الخلفي (باك هو لودر) من  هو أداة تدريب شاملة للمبتدئين والمشغلين ذوي الخبرة. يركز التدريب على الوعي باستقرار المركبة، والعمل في ظروف الرؤية المنخفضة، وأعمال الردم والتسوية وحفر الخنادق. يتميز المحاكي بمنصة ديناميكية، وشاشة 4K UHD، ووحدات تحكم طبق الأصل، ويوفر قياساً دقيقاً لمهارات السائقين مثل دقة المناورة والإنتاجية.",
         simulatorType: "Backhoe",
         audience: "Professional",
-        imageUrl: "/assets/images/machines-simulator/backhoe_loader.png",
+        imageUrl: "./assets/images/machines-simulator/backhoe_loader.png",
       }
     ]
 
@@ -91,7 +91,7 @@ export const SECTORS: Sector[] = [
         longDescription: "محاكي الممهدة (Motor Grader) من  هو أداة تدريب مصممة للمبتدئين والمشغلين ذوي الخبرة. يركز التدريب على المناورات المعقدة، وإدارة آليات المفصل، والعمل في التضاريس الوعرة، والعمل مع شاحنة قلابة. يتميز المحاكي بمنصة ديناميكية، وشاشة 4K UHD، ووحدات تحكم طبق الأصل، ويوفر قياساً دقيقاً لمهارات السائقين مثل دقة التسوية والتمهيد.",
         simulatorType: "Other",
         audience: "Professional",
-        imageUrl: "/assets/images/machines-simulator/motor_grader.png",
+        imageUrl: "./assets/images/machines-simulator/motor_grader.png",
       },
       {
         id: 'mining-shovel',
