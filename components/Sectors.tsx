@@ -6,7 +6,7 @@ import { Sector, Machine } from '../types';
 
 // --- Sub-Components for Different Layouts ---
 
-// 1. Horizontal Card (Public Works) - The Classic Detailed View
+// 1. Horizontal Card (Public Works) -
 const HorizontalCard: React.FC<{ machine: Machine; index: number }> = ({ machine, index }) => (
   <div className="bg-white rounded-3xl overflow-hidden shadow-2xl md:max-w-4xl mx-auto transform transition-transform hover:scale-[1.01] duration-300 border border-gray-100">
     <div className="grid md:grid-cols-2">
@@ -29,7 +29,7 @@ const HorizontalCard: React.FC<{ machine: Machine; index: number }> = ({ machine
           <h3 className="text-2xl font-bold text-gray-900 mb-2">{machine.name}</h3>
           <div className="h-1 w-12 bg-industrial-yellow mb-4"></div>
           <p className="text-gray-600 mb-6 leading-relaxed">
-            {machine.description}
+            {machine.shortDescription}
           </p>
           {machine.highlight && (
             <div className="bg-gray-50 p-4 rounded-xl border-r-4 border-gray-400">
@@ -64,7 +64,7 @@ const VerticalCard: React.FC<{ machine: Machine; index: number }> = ({ machine, 
     </div>
     <div className="p-8 relative">
       <p className="text-stone-400 mb-6 leading-relaxed text-lg">
-        {machine.description}
+        {machine.shortDescription}
       </p>
       {machine.highlight && (
         <div className="bg-stone-800/50 p-4 rounded-xl border border-stone-700">
@@ -101,7 +101,7 @@ const CompactCard: React.FC<{ machine: Machine; index: number }> = ({ machine, i
         <div className="h-1 w-0 group-hover:w-12 bg-blue-500 mb-3 transition-all duration-300"></div>
 
         <p className="text-gray-300 text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 line-clamp-3">
-          {machine.description}
+          {machine.shortDescription}
         </p>
 
         {machine.highlight && (
@@ -163,7 +163,7 @@ const SectorItem: React.FC<SectorItemProps> = ({ sector, onNavigate }) => {
         </div>
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">{sector.title}</h2>
         <p className="text-gray-300 text-lg leading-relaxed mb-8">
-          {sector.shortDescription}
+          {sector.description}
         </p>
         <div
           onClick={() => onNavigate('machines')}
@@ -197,20 +197,24 @@ const SectorItem: React.FC<SectorItemProps> = ({ sector, onNavigate }) => {
         ) : (
           // Public Works & Mining: Stacked (Sticky) Layout
           sector.machines.map((machine, index) => (
-            <motion.div
+            <div
               key={machine.id}
               className={`relative mb-12 last:mb-0 md:sticky md:top-32 md:mb-[40vh] md:last:mb-12`}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              style={{ zIndex: index + 1 }}
             >
-              {isMining ? (
-                <VerticalCard machine={machine} index={index} />
-              ) : (
-                <HorizontalCard machine={machine} index={index} />
-              )}
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                {isMining ? (
+                  <VerticalCard machine={machine} index={index} />
+                ) : (
+                  <HorizontalCard machine={machine} index={index} />
+                )}
+              </motion.div>
+            </div>
           ))
         )}
 

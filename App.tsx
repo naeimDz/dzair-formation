@@ -16,7 +16,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-industrial-dark font-sans text-right overflow-x-hidden" dir="rtl">
+    <div className="min-h-screen w-full bg-industrial-dark font-sans text-right" dir="rtl">
       <Navbar
         currentView={currentView}
         onNavigate={(view) => setCurrentView(view as any)}

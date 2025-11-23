@@ -42,7 +42,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
             <nav
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
                     ? 'bg-industrial-dark/90 backdrop-blur-md border-b border-white/10 py-2 shadow-lg'
-                    : 'bg-transparent py-4 backdrop-blur-sm'
+                    : 'bg-industrial-dark md:bg-transparent py-4'
                     }`}
             >
                 <div className="container mx-auto px-4 md:px-6">
@@ -55,32 +55,34 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                             <img
                                 src={logo}
                                 alt="Dzair Formation"
-                                className={`transition-all duration-300 ${isScrolled ? 'h-16' : 'h-24 md:h-32'}`}
+                                className={`transition-all duration-300 ${isScrolled ? 'h-12 md:h-16' : 'h-16 md:h-32'}`}
                             />
-                        </div>
+                        </div >
 
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center space-x-1 space-x-reverse">
-                            {navLinks.map((link) => {
-                                const Icon = link.icon;
-                                const isActive = currentView === link.id;
-                                return (
-                                    <button
-                                        key={link.id}
-                                        onClick={() => handleNavClick(link.id)}
-                                        className={`relative px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 group ${isActive
-                                            ? 'text-industrial-yellow bg-white/5 font-bold'
-                                            : 'text-gray-300 hover:text-white hover:bg-white/5'
-                                            }`}
-                                    >
-                                        <Icon size={18} className={isActive ? 'text-industrial-yellow' : 'text-gray-400 group-hover:text-white'} />
-                                        <span>{link.label}</span>
-                                        {isActive && (
-                                            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-industrial-yellow rounded-full mx-4" />
-                                        )}
-                                    </button>
-                                );
-                            })}
+                            {
+                                navLinks.map((link) => {
+                                    const Icon = link.icon;
+                                    const isActive = currentView === link.id;
+                                    return (
+                                        <button
+                                            key={link.id}
+                                            onClick={() => handleNavClick(link.id)}
+                                            className={`relative px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 group ${isActive
+                                                ? 'text-industrial-yellow bg-white/5 font-bold'
+                                                : 'text-gray-300 hover:text-white hover:bg-white/5'
+                                                }`}
+                                        >
+                                            <Icon size={18} className={isActive ? 'text-industrial-yellow' : 'text-gray-400 group-hover:text-white'} />
+                                            <span>{link.label}</span>
+                                            {isActive && (
+                                                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-industrial-yellow rounded-full mx-4" />
+                                            )}
+                                        </button>
+                                    );
+                                })
+                            }
 
                             {/* CTA Button */}
                             <div className="flex items-center gap-4 mr-4">
@@ -111,7 +113,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                                     سجل الآن
                                 </button>
                             </div>
-                        </div>
+                        </div >
 
                         {/* Mobile Menu Button */}
                         <button
@@ -119,10 +121,10 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         >
                             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button>
-                    </div>
-                </div>
-            </nav>
+                        </button >
+                    </div >
+                </div >
+            </nav >
 
             {/* Mobile Menu Overlay */}
             <div
