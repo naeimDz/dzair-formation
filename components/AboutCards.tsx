@@ -3,8 +3,34 @@ import { motion } from 'framer-motion';
 import { BookOpen, Award, CheckCircle } from 'lucide-react';
 
 const AboutCards: React.FC = () => {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    checkMobile();
+
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+    mobile: { opacity: 1, y: 0 }
+  };
+
+  const secondCardVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0 },
+    mobile: { opacity: 1, x: 0 }
+  };
+
   return (
-    <section className="py-24 bg-concrete text-industrial-dark">
+    <section className="py-24 bg-concrete text-industrial-dark overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">أكثر من مجرد تدريب</h2>
@@ -14,8 +40,9 @@ const AboutCards: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Program Card */}
           <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={isMobile ? "mobile" : "hidden"}
+            whileInView={isMobile ? "mobile" : "visible"}
+            variants={cardVariants}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="bg-white p-8 rounded-2xl shadow-xl border-r-4 border-industrial-yellow hover:shadow-2xl transition-shadow"
@@ -43,10 +70,11 @@ const AboutCards: React.FC = () => {
 
           {/* Features Card */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={isMobile ? "mobile" : "hidden"}
+            whileInView={isMobile ? "mobile" : "visible"}
+            variants={secondCardVariants}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: isMobile ? 0 : 0.2 }}
             className="bg-industrial-dark text-white p-8 rounded-2xl shadow-xl border-r-4 border-gray-600 hover:shadow-2xl transition-shadow relative overflow-hidden"
           >
             {/* Decorative background icon */}

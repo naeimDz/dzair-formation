@@ -19,12 +19,12 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         <>
             <HeroParallax />
             <Stats />
-            <AboutCards />
             <Sectors onNavigate={onNavigate} />
+            <Contact onNavigate={onNavigate} />
             <Journey />
             <AudienceSplit />
+            <AboutCards />
             <FAQ />
-            <Contact onNavigate={onNavigate} />
             <AIChat />
             <StickyContact />
         </>

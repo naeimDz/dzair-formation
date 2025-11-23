@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Home, Calendar, Wrench } from 'lucide-react';
-import logo from '../assets/images/logo-text.png';
+import logo from '../assets/images/logo_final.png';
 
 interface NavbarProps {
     onNavigate: (view: string) => void;
@@ -48,16 +48,36 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                 <div className="container mx-auto px-4 md:px-6">
                     <div className="flex items-center justify-between flex-row-reverse">
                         {/* Logo */}
-                        <div
-                            className="cursor-pointer flex items-center"
-                            onClick={() => handleNavClick('home')}
-                        >
-                            <img
-                                src={logo}
-                                alt="Dzair Formation"
-                                className={`transition-all duration-300 ${isScrolled ? 'h-12 md:h-16' : 'h-16 md:h-32'}`}
-                            />
-                        </div >
+                        {/* Logo */}
+                        <div className="flex items-center gap-4 md:gap-8">
+                            <div
+                                className="cursor-pointer flex items-center"
+                                onClick={() => handleNavClick('home')}
+                            >
+                                <img
+                                    src={logo}
+                                    alt="Dzair Formation"
+                                    className={`transition-all duration-300 ${isScrolled ? 'h-12 md:h-16' : 'h-16 md:h-32'}`}
+                                />
+                            </div >
+
+                            <button
+                                onClick={() => {
+                                    const contactSection = document.getElementById('contact_footer');
+                                    if (contactSection) {
+                                        contactSection.scrollIntoView({ behavior: 'smooth' });
+                                    } else {
+                                        handleNavClick('home');
+                                        setTimeout(() => {
+                                            document.getElementById('contact_footer')?.scrollIntoView({ behavior: 'smooth' });
+                                        }, 100);
+                                    }
+                                }}
+                                className="bg-industrial-yellow text-industrial-dark px-3 py-1.5 md:px-6 md:py-3 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-xs md:text-base whitespace-nowrap"
+                            >
+                                سجل الآن
+                            </button>
+                        </div>
 
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center space-x-1 space-x-reverse">
@@ -98,19 +118,19 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
 
                                 <button
                                     onClick={() => {
-                                        const contactSection = document.getElementById('contact');
+                                        const contactSection = document.getElementById('contact_footer');
                                         if (contactSection) {
                                             contactSection.scrollIntoView({ behavior: 'smooth' });
                                         } else {
                                             handleNavClick('home');
                                             setTimeout(() => {
-                                                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                                                document.getElementById('contact_footer')?.scrollIntoView({ behavior: 'smooth' });
                                             }, 100);
                                         }
                                     }}
-                                    className="bg-industrial-yellow text-industrial-dark px-5 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors shadow-[0_0_15px_rgba(250,204,21,0.3)] hover:shadow-[0_0_25px_rgba(250,204,21,0.5)]"
+                                    className="bg-white/10 text-white px-5 py-2 rounded-lg font-bold hover:bg-white/20 transition-colors border border-white/10"
                                 >
-                                    سجل الآن
+                                    اتصل بنا
                                 </button>
                             </div>
                         </div >
