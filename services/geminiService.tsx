@@ -12,7 +12,7 @@ Identity & Tone:
 
 Knowledge Base:
 - School: Dzair Formation & Services (Approved by the State / معتمدة من الدولة).
-- Locations: Rouiba (Algiers) & Oran.
+- Locations: Algeria, (وين ما تكون انت تلقانا، رانا قراب ليك).
 - Methodology: 1. Advanced Simulators (Zero risk, comfortable) -> 2. Real Machine Practice.
 - Machines: Excavator (Poclain), Bulldozer, Chargeur (Loaders), Forklift (Clark), Mobile Crane (Grue Mobile).
 - Dossier: 2 Photos, ID Copy, Birth Certificate, Residence Certificate.
@@ -24,17 +24,20 @@ Handling FAQ (Smart Logic):
 - Distance: If they say they are far, mention "We have accommodation solutions" (عندنا اتفاقيات للإيواء/المرقد).
 
 Contact:
-If specific details are needed, direct to phone: 0550 00 00 00.
+If specific details are needed, direct to phone: 0770526454.
 Keep responses short, helpful, and action-oriented.
 `;
 
 let chatSession: any = null;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
+// Debug: Check if key is loaded at runtime
+console.log("DEBUG: API_KEY loaded:", !!API_KEY, "Length:", API_KEY?.length);
+
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash-lite", // أسرع وأكثر كفاءة للمحادثات الحية
+    model: "gemini-2.0-flash-lite", // أسرع وأكثر كفاءة للمحادثات الحية
     systemInstruction: SYSTEM_INSTRUCTION,
 });
 
@@ -51,7 +54,8 @@ export const sendMessageToGemini = async (
 ): Promise<string> => {
     try {
         if (!API_KEY) {
-            return "عذراً، المفتاح الخاص بالذكاء الاصطناعي مفقود.";
+            console.error("Gemini Error: Missing API Key");
+            return "عذراً، المفتاح الخاص بالذكاء الاصطناعي مفقود (Missing API Key).";
         }
 
         // إعادة تهيئة الجلسة إذا لم تكن موجودة أو إذا كان التاريخ فارغاً (جلسة جديدة)
@@ -69,9 +73,24 @@ export const sendMessageToGemini = async (
         const response = await result.response;
         return response.text();
 
-    } catch (error) {
-        console.error("Gemini Error:", error);
+    } catch (error: any) {
+        console.error("FULL GEMINI ERROR OBJECT:", error);
+        console.error("Error Name:", error.name);
+        console.error("Error Message:", error.message);
+        console.error("Error Stack:", error.stack);
+
         chatSession = null; // إعادة تعيين الجلسة عند الخطأ
-        return "سمحلي، كاين ضغط صغير على الشبكة. عاود سقسيني دوك نجاوبك.";
+
+        const errorMessage = error.toString().toLowerCase();
+
+        if (errorMessage.includes("401") || errorMessage.includes("api key")) {
+            return "عذراً، هناك مشكلة في مفتاح التفعيل (Invalid API Key). يرجى التحقق من الإعدادات.";
+        }
+
+        if (errorMessage.includes("429") || errorMessage.includes("quota")) {
+            return "عذراً، لقد تجاوزنا الحد المسموح به من الطلبات (Quota Exceeded). يرجى المحاولة لاحقاً.";
+        }
+
+        return "سمحلي، كاين مشكل تقني صغير. عاود سقسيني دوك نجاوبك. (Error: " + error.message + ")";
     }
 };

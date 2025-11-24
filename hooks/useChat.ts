@@ -46,10 +46,14 @@ export const useChat = () => {
             // Note: The service now handles session history internally, but we pass the context for the first init if needed
             // or we could just pass the full history if we were stateless.
             // Given the refactor, we just need to pass the history structure expected by the service.
-            const history = messages.map(m => ({
-                role: m.role,
-                parts: [{ text: m.text }]
-            }));
+            // Filter out the initial welcome message (or any leading model messages)
+            // The API requires the first message to be from the 'user'
+            const history = messages
+                .filter((_, index) => index > 0 || messages[0].role === 'user')
+                .map(m => ({
+                    role: m.role,
+                    parts: [{ text: m.text }]
+                }));
 
             const responseText = await sendMessageToGemini(history, userMsg.text);
 
