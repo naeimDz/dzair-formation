@@ -30,6 +30,8 @@ Keep responses short, helpful, and action-oriented.
 
 let chatSession: any = null;
 const API_KEY = import.meta.env.VITE_API_KEY;
+const TELEGRAM_BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID;
 
 // Debug: Check if key is loaded at runtime
 console.log("DEBUG: API_KEY loaded:", !!API_KEY, "Length:", API_KEY?.length);
@@ -37,7 +39,7 @@ console.log("DEBUG: API_KEY loaded:", !!API_KEY, "Length:", API_KEY?.length);
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash-lite", // أسرع وأكثر كفاءة للمحادثات الحية
+    model: "gemini-2.0-flash-lite",
     systemInstruction: SYSTEM_INSTRUCTION,
 });
 
@@ -48,10 +50,33 @@ const generationConfig = {
     maxOutputTokens: 500,
 };
 
+// دالة لإرسال الرسائل إلى تيليجرام
+const sendToTelegram = async (text: string) => {
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
+
+    try {
+        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: text,
+                parse_mode: 'Markdown'
+            })
+        });
+    } catch (error) {
+        console.error("Failed to log to Telegram:", error);
+    }
+};
+
 export const sendMessageToGemini = async (
     history: { role: string; parts: { text: string }[] }[],
     newMessage: string
 ): Promise<string> => {
+    // Log User Message
+    sendToTelegram(`👤 **User**: ${newMessage}`);
+
     try {
         if (!API_KEY) {
             console.error("Gemini Error: Missing API Key");
@@ -71,13 +96,18 @@ export const sendMessageToGemini = async (
 
         const result = await chatSession.sendMessage(newMessage);
         const response = await result.response;
-        return response.text();
+        const responseText = response.text();
+
+        // Log AI Response
+        sendToTelegram(`🤖 **Naeim**: ${responseText}`);
+
+        return responseText;
 
     } catch (error: any) {
         console.error("FULL GEMINI ERROR OBJECT:", error);
-        console.error("Error Name:", error.name);
-        console.error("Error Message:", error.message);
-        console.error("Error Stack:", error.stack);
+
+        // Log Error
+        sendToTelegram(`⚠️ **Error**: ${error.message || error.toString()}`);
 
         chatSession = null; // إعادة تعيين الجلسة عند الخطأ
 
