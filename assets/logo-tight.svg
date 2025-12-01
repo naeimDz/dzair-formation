@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="800" height="200" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet">
+  <!-- background transparent -->
+  <rect width="100%" height="100%" fill="transparent"/>
+
+  <!-- Dzair (big, bold) -->
+  <!-- Using system bold/black fallback; convert to paths for perfect control -->
+  <g id="dzair" transform="translate(0,8)">
+    <text x="400" y="100"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          font-family="'Montserrat', 'Arial Black', 'Impact', sans-serif"
+          font-weight="900"
+          font-size="140"
+          letter-spacing="-4"
+          fill="#D4A300">
+      Dzair
+    </text>
+  </g>
+
+  <!-- FORMATION (serif, white) overlapping and centered under Dzair -->
+  <g id="formation">
+    <text x="400" y="150"
+          text-anchor="middle"
+          font-family="'Playfair Display', 'Georgia', serif"
+          font-weight="700"
+          font-size="44"
+          letter-spacing="6"
+          fill="#FFFFFF"
+          style="text-transform:uppercase;">
+      FORMATION
+    </text>
+  </g>
+</svg>

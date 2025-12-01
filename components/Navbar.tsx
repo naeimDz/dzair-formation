@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Home, Calendar, Wrench } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import logo from '../assets/images/fiinale-finale.png';
+import { Home, Calendar, Wrench, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+//import logo from '../assets/logo-tight.svg';
+import logo from '../assets/images/fiinale-finale2.png';
+import NavbarDesktop from './navbar/NavbarDesktop';
+import NavbarMobile from './navbar/NavbarMobile';
 
 const Navbar: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const location = useLocation();
-    const navigate = useNavigate();
 
-    // Handle scroll effect
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 20) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
-            }
+            setIsScrolled(window.scrollY > 20);
         };
-
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
@@ -40,160 +36,98 @@ const Navbar: React.FC = () => {
     };
 
     return (
-        <>
-            <nav
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-                    ? 'bg-industrial-dark/90 backdrop-blur-md border-b border-white/10 py-2 shadow-lg'
-                    : 'bg-industrial-dark md:bg-transparent py-4'
-                    }`}
-            >
-                <div className="container mx-auto px-4 md:px-6">
-                    <div className="flex items-center justify-between flex-row-reverse relative">
-                        {/* Logo */}
-                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0 md:transform-none z-10">
-                            <Link
-                                to="/"
-                                className="cursor-pointer flex items-center"
-                                onClick={handleNavClick}
-                            >
-                                <img
-                                    src={logo}
-                                    alt="Dzair Formation"
-                                    className={`transition-all duration-300 ${isScrolled ? 'h-10 md:h-16' : 'h-14 md:h-32'}`}
-                                />
-                            </Link >
-                        </div>
+        <nav
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+                ? 'bg-industrial-dark/95 backdrop-blur-md border-b border-white/10 py-2 shadow-lg'
+                : 'bg-industrial-dark md:bg-transparent py-4'
+                }`}
+        >
+            <div className="container mx-auto px-4 md:px-6">
 
-                        {/* Desktop Navigation */}
-                        <div className="hidden md:flex items-center space-x-1 space-x-reverse">
-                            {
-                                navLinks.map((link) => {
-                                    const Icon = link.icon;
-                                    const active = isActive(link.path);
-                                    return (
-                                        <Link
-                                            key={link.path}
-                                            to={link.path}
-                                            onClick={handleNavClick}
-                                            className={`relative px-4 py-2 flex items-center gap-2 transition-all duration-300 group ${active
-                                                ? 'text-industrial-yellow bg-white/5 font-bold'
-                                                : 'text-gray-300 hover:text-white hover:bg-white/5'
-                                                }`}
-                                        >
-                                            <Icon size={18} className={active ? 'text-industrial-yellow' : 'text-gray-400 group-hover:text-white'} />
-                                            <span>{link.label}</span>
-                                            {active && (
-                                                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-industrial-yellow  mx-4" />
-                                            )}
-                                        </Link>
-                                    );
-                                })
-                            }
+                {/* --- DESKTOP VIEW (Hidden on Mobile) --- */}
+                <div className="hidden md:flex items-center justify-between flex-row-reverse">
+                    <Link to="/" onClick={handleNavClick}>
+                        <img
+                            src={logo}
+                            alt="Dzair Formation"
+                            className={`transition-all duration-300 ${isScrolled ? 'h-16' : 'h-32'}`}
+                        />
+                    </Link>
+                    <NavbarDesktop
+                        navLinks={navLinks}
+                        isActive={isActive}
+                        handleNavClick={handleNavClick}
+                    />
+                </div>
 
-                            {/* CTA Button */}
-                            <div className="flex items-center gap-4 mr-4">
-                                <div className="hidden lg:flex items-center gap-2 bg-white/5 px-3 py-1.5  border border-white/10 animate-fade-up">
-                                    <span className="relative flex h-2 w-2">
-                                        <span className="animate-ping absolute inline-flex h-full w-full  bg-emerald-400 opacity-75"></span>
-                                        <span className="relative inline-flex  h-2 w-2 bg-emerald-500"></span>
-                                    </span>
-                                    <span className="text-sm font-semibold tracking-wide text-emerald-400">
-                                        التسجيلات مفتوحة لدورة جانفي 2026
-                                    </span>
-                                </div>
+                {/* --- MOBILE VIEW (Relative container with absolute centered logo) --- */}
+                <div className="md:hidden relative flex items-center justify-between w-full min-h-[48px]">
 
-                                <Link
-                                    to="/contact"
-                                    onClick={handleNavClick}
-                                    className="bg-white/10 text-white px-5 py-2 font-bold hover:bg-white/20 transition-colors border border-white/10"
-                                >
-                                    اتصل بنا
-                                </Link>
-                            </div>
-                        </div >
-
-                        {/* Mobile Menu Button */}
-                        <button
-                            className="md:hidden text-white p-2 hover:bg-white/10 transition-colors"
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        >
-                            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button >
-
-                        {/* Mobile Register Button */}
+                    {/* LEFT: Action Button */}
+                    <div className="flex justify-start z-10">
                         <Link
                             to="/contact"
                             onClick={handleNavClick}
-                            className="md:hidden bg-industrial-yellow text-industrial-dark px-3 py-1.5 font-bold hover:bg-yellow-400 transition-colors shadow-lg text-xs whitespace-nowrap"
+                            className="bg-industrial-yellow text-industrial-dark 
+                            px-4 py-2 font-bold rounded-sm shadow-lg text-sm
+                            flex items-center justify-center whitespace-nowrap"
                         >
                             سجل الآن
                         </Link>
-                    </div >
-                </div>
-            </nav>
+                    </div>
 
-            {/* Mobile Menu Overlay */}
-            <div
-                className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-                    }`}
-                onClick={() => setIsMobileMenuOpen(false)}
-            />
+                    {/* CENTER: Logo (Absolutely positioned in true center - 20% larger) */}
+                    <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
+                        <Link to="/" onClick={handleNavClick} className="pointer-events-auto block">
+                            <img
+                                src={logo}
+                                alt="Dzair Formation"
+                                className={`object-contain transition-all duration-300 ${isScrolled ? 'h-12' : 'h-[58px]'
+                                    }`}
+                            />
+                        </Link>
+                    </div>
 
-            {/* Mobile Menu Drawer */}
-            <div
-                className={`fixed top-0 right-0 z-50 h-full w-64 bg-industrial-dark border-l border-white/10 shadow-2xl transform transition-transform duration-300 ease-out md:hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-                    }`}
-            >
-                <div className="p-6 flex flex-col h-full">
-                    <div className="flex justify-between items-center mb-8">
-                        <span className="text-xl font-bold text-white">القائمة</span>
+                    {/* RIGHT: Hamburger Menu */}
+                    <div className="flex justify-end z-10">
                         <button
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-gray-400 hover:text-white"
+                            className="text-industrial-yellow px-3 py-2 transition-colors outline-none bg-industrial-yellow/10 rounded-sm"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            aria-label="Menu"
                         >
-                            <X size={24} />
+                            {isMobileMenuOpen ? (
+                                <X size={32} className="text-industrial-yellow" strokeWidth={2.5} />
+                            ) : (
+                                <svg
+                                    width="60"
+                                    height="26"
+                                    viewBox="0 0 60 26"
+                                    fill="none"
+                                    stroke="#E3B627"
+                                    strokeWidth="3.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <line x1="2" y1="3" x2="58" y2="3" />
+                                    <line x1="2" y1="13" x2="58" y2="13" />
+                                    <line x1="2" y1="23" x2="58" y2="23" />
+                                </svg>
+                            )}
                         </button>
                     </div>
 
-                    <div className="flex flex-col space-y-2">
-                        {navLinks.map((link) => {
-                            const Icon = link.icon;
-                            const active = isActive(link.path);
-                            return (
-                                <Link
-                                    key={link.path}
-                                    to={link.path}
-                                    onClick={handleNavClick}
-                                    className={`flex items-center gap-3 px-4 py-3 transition-colors ${active
-                                        ? 'bg-industrial-yellow/10 text-industrial-yellow border-r-4 border-industrial-yellow'
-                                        : 'text-gray-300 hover:bg-white/5 hover:text-white'
-                                        }`}
-                                >
-                                    <Icon size={20} />
-                                    <span className="font-medium">{link.label}</span>
-                                </Link>
-                            );
-                        })}
-
-                        <div className="my-4 border-t border-white/10" />
-
-                        <Link
-                            to="/contact"
-                            onClick={() => {
-                                setIsMobileMenuOpen(false);
-                            }}
-                            className="bg-industrial-yellow text-industrial-dark px-4 py-3 font-bold text-center hover:bg-yellow-400 transition-colors"
-                        >
-                            سجل الآن
-                        </Link>
-                    </div>
-
-                    <div className="mt-auto text-center text-gray-500 text-sm">
-                        <p>© 2025 Dzair Formation</p>
-                    </div>
                 </div>
+
+                {/* Mobile Drawer Component */}
+                <NavbarMobile
+                    isMobileMenuOpen={isMobileMenuOpen}
+                    setIsMobileMenuOpen={setIsMobileMenuOpen}
+                    navLinks={navLinks}
+                    isActive={isActive}
+                    handleNavClick={handleNavClick}
+                />
             </div>
-        </>
+        </nav>
     );
 };
 
